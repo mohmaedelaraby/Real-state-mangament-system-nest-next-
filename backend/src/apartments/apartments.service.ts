@@ -33,6 +33,10 @@ export class ApartmentsService {
       filters.push({ project: { contains: query.project, mode: 'insensitive' } });
     }
 
+    if (query.city) {
+      filters.push({ city: { contains: query.city, mode: 'insensitive' } });
+    }
+
     if (filters.length > 0) {
       where.AND = filters;
     }
@@ -66,9 +70,13 @@ export class ApartmentsService {
         name: dto.name,
         unitNumber: dto.unitNumber,
         project: dto.project,
+        city: dto.city,
         description: dto.description,
         address: dto.address,
         area: dto.area,
+        price: dto.price,
+        beds: dto.beds,
+        baths: dto.baths,
         images,
       },
     });

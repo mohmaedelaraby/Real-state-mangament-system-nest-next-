@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString, MaxLength } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsPositive, IsString, MaxLength, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateApartmentDto {
@@ -19,6 +19,11 @@ export class CreateApartmentDto {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(200)
+  city!: string;
+
+  @IsString()
+  @IsNotEmpty()
   description!: string;
 
   @IsString()
@@ -30,4 +35,19 @@ export class CreateApartmentDto {
   @IsNumber()
   @IsPositive()
   area!: number;
+
+  @Type(() => Number)
+  @IsNumber()
+  @IsPositive()
+  price!: number;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  beds!: number;
+
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
+  baths!: number;
 }

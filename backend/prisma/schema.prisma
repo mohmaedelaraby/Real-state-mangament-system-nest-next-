@@ -7,14 +7,18 @@ datasource db {
 }
 
 model Apartment {
-  id         String   @id @default(uuid())
-  name       String
-  unitNumber String
-  project    String
+  id          String   @id @default(uuid())
+  name        String
+  unitNumber  String
+  project     String
+  city        String
   description String
-  address    String
-  area       Float
-  images     String[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  address     String
+  area        Float
+  price       Float
+  beds        Int
+  baths       Int
+  images      String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

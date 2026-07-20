@@ -12,6 +12,11 @@ export class QueryApartmentsDto {
   @IsString()
   project?: string;
 
+  // Filter by city (case-insensitive, partial match)
+  @IsOptional()
+  @IsString()
+  city?: string;
+
   @IsOptional()
   @Type(() => Number)
   @IsInt()
