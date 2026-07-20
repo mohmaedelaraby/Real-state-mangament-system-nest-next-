@@ -29,6 +29,7 @@ export async function fetchApartments(
   const query = new URLSearchParams();
   if (params.search) query.set('search', params.search);
   if (params.project) query.set('project', params.project);
+  if (params.city) query.set('city', params.city);
   query.set('page', String(params.page ?? 1));
   query.set('limit', String(params.limit ?? 12));
 
@@ -46,9 +47,13 @@ export async function createApartment(payload: CreateApartmentPayload): Promise<
   formData.set('name', payload.name);
   formData.set('unitNumber', payload.unitNumber);
   formData.set('project', payload.project);
+  formData.set('city', payload.city);
   formData.set('description', payload.description);
   formData.set('address', payload.address);
   formData.set('area', String(payload.area));
+  formData.set('price', String(payload.price));
+  formData.set('beds', String(payload.beds));
+  formData.set('baths', String(payload.baths));
   payload.images.forEach((file) => formData.append('images', file));
 
   const res = await fetch(`${API_BASE_URL}/apartments`, {

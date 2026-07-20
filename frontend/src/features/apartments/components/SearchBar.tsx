@@ -14,10 +14,10 @@ export default function SearchBar({ value, onChange }: Props) {
       size="large"
       allowClear
       placeholder="Search by name, unit number, or project..."
-      prefix={<SearchOutlined />}
+      prefix={<SearchOutlined style={{ opacity: 0.4 }} />}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      style={{ maxWidth: 480 }}
+      style={{ maxWidth: 520, borderRadius: 13, padding: '10px 16px' }}
     />
   );
 }

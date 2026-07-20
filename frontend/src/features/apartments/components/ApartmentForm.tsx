@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Button, Form, Input, InputNumber, Upload, message } from 'antd';
+import { Button, Col, Form, Input, InputNumber, Row, Select, Upload, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadFile, UploadProps } from 'antd';
 import { useRouter } from 'next/navigation';
 import { createApartment } from '../api/apartmentsApi';
+import { AREA_OPTIONS, CITIES, PROJECTS } from '../constants';
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
@@ -14,9 +15,13 @@ interface FormValues {
   name: string;
   unitNumber: string;
   project: string;
+  city: string;
   description: string;
   address: string;
   area: number;
+  price: number;
+  beds: number;
+  baths: number;
 }
 
 export default function ApartmentForm() {
@@ -55,36 +60,79 @@ export default function ApartmentForm() {
 
   return (
     <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false}>
-      <Form.Item name="name" label="Unit name" rules={[{ required: true, message: 'Please enter a unit name' }]}>
-        <Input placeholder="e.g. Maple Residence 3B" />
-      </Form.Item>
+      <Row gutter={16}>
+        <Col xs={24} sm={12}>
+          <Form.Item
+            name="name"
+            label="Unit name"
+            rules={[{ required: true, message: 'Please enter a unit name' }]}
+          >
+            <Input placeholder="e.g. Sea-view Chalet" />
+          </Form.Item>
+        </Col>
+        <Col xs={24} sm={12}>
+          <Form.Item
+            name="unitNumber"
+            label="Unit number"
+            rules={[{ required: true, message: 'Please enter a unit number' }]}
+          >
+            <Input placeholder="e.g. CH-204" />
+          </Form.Item>
+        </Col>
+      </Row>
 
-      <Form.Item
-        name="unitNumber"
-        label="Unit number"
-        rules={[{ required: true, message: 'Please enter a unit number' }]}
-      >
-        <Input placeholder="e.g. 3B" />
-      </Form.Item>
+      <Row gutter={16}>
+        <Col xs={24} sm={12}>
+          <Form.Item
+            name="project"
+            label="Project"
+            rules={[{ required: true, message: 'Please select a project' }]}
+          >
+            <Select
+              placeholder="Select a project"
+              options={PROJECTS.map((p) => ({ value: p, label: p }))}
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={24} sm={12}>
+          <Form.Item name="city" label="City" rules={[{ required: true, message: 'Please select a city' }]}>
+            <Select placeholder="Select a city" options={CITIES.map((c) => ({ value: c, label: c }))} />
+          </Form.Item>
+        </Col>
+      </Row>
 
-      <Form.Item name="project" label="Project" rules={[{ required: true, message: 'Please enter a project name' }]}>
-        <Input placeholder="e.g. Maple Heights" />
-      </Form.Item>
+      <Row gutter={16}>
+        <Col xs={12} sm={6}>
+          <Form.Item name="area" label="Area (sqm)" rules={[{ required: true, message: 'Select area' }]}>
+            <Select
+              placeholder="Area"
+              options={AREA_OPTIONS.map((a) => ({ value: a, label: `${a} sqm` }))}
+            />
+          </Form.Item>
+        </Col>
+        <Col xs={12} sm={6}>
+          <Form.Item name="beds" label="Beds" rules={[{ required: true, message: 'Enter beds' }]}>
+            <InputNumber min={0} style={{ width: '100%' }} placeholder="2" />
+          </Form.Item>
+        </Col>
+        <Col xs={12} sm={6}>
+          <Form.Item name="baths" label="Baths" rules={[{ required: true, message: 'Enter baths' }]}>
+            <InputNumber min={0} style={{ width: '100%' }} placeholder="2" />
+          </Form.Item>
+        </Col>
+        <Col xs={12} sm={6}>
+          <Form.Item name="price" label="Price (EGP)" rules={[{ required: true, message: 'Enter price' }]}>
+            <InputNumber min={0} style={{ width: '100%' }} placeholder="3000000" />
+          </Form.Item>
+        </Col>
+      </Row>
 
       <Form.Item
         name="address"
         label="Address"
         rules={[{ required: true, message: 'Please enter an address' }]}
       >
-        <Input placeholder="e.g. 12 Maple Street, New Cairo" />
-      </Form.Item>
-
-      <Form.Item
-        name="area"
-        label="Area (sqm)"
-        rules={[{ required: true, message: 'Please enter the area' }]}
-      >
-        <InputNumber min={1} style={{ width: '100%' }} placeholder="e.g. 120.5" />
+        <Input placeholder="e.g. North Coast, Egypt" />
       </Form.Item>
 
       <Form.Item
@@ -92,10 +140,10 @@ export default function ApartmentForm() {
         label="Description"
         rules={[{ required: true, message: 'Please enter a description' }]}
       >
-        <TextArea rows={4} placeholder="Describe the apartment..." />
+        <TextArea rows={4} placeholder="Describe the unit..." />
       </Form.Item>
 
-      <Form.Item label="Images">
+      <Form.Item label="Photos">
         <Dragger {...uploadProps}>
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
@@ -107,7 +155,7 @@ export default function ApartmentForm() {
 
       <Form.Item>
         <Button type="primary" htmlType="submit" loading={submitting} block size="large">
-          Create apartment
+          Publish listing
         </Button>
       </Form.Item>
     </Form>
