@@ -3,25 +3,9 @@
 import { CheckOutlined } from '@ant-design/icons';
 import { PROJECTS, CITIES } from '../constants';
 import styles from '../styles/filterSidebar.module.css';
+import { FilterGroupProps, FilterSidebarProps } from '../interfaces';
 
-interface Props {
-  project: string;
-  city: string;
-  onProjectChange: (project: string) => void;
-  onCityChange: (city: string) => void;
-}
-
-function FilterGroup({
-  title,
-  items,
-  selected,
-  onSelect,
-}: {
-  title: string;
-  items: string[];
-  selected: string;
-  onSelect: (value: string) => void;
-}) {
+function FilterGroup({ title, items, selected, onSelect }: FilterGroupProps) {
   return (
     <div className={styles.group}>
       <div className={styles.groupTitle}>{title}</div>
@@ -46,7 +30,7 @@ function FilterGroup({
   );
 }
 
-export default function FilterSidebar({ project, city, onProjectChange, onCityChange }: Props) {
+export default function FilterSidebar({ project, city, onProjectChange, onCityChange }: FilterSidebarProps) {
   const hasFilter = Boolean(project || city);
 
   return (

@@ -8,29 +8,13 @@ import { useRouter } from 'next/navigation';
 import { createApartment } from '../api/apartmentsApi';
 import { AREA_OPTIONS, CITIES, PROJECTS } from '../constants';
 import styles from '../styles/apartmentForm.module.css';
+import { ApartmentFormProps, ApartmentFormValues } from '../interfaces';
 
 const { TextArea } = Input;
 
-interface FormValues {
-  name: string;
-  unitNumber: string;
-  project: string;
-  city: string;
-  description: string;
-  address: string;
-  area: number;
-  price: number;
-  beds: number;
-  baths: number;
-}
-
-interface Props {
-  onDone?: () => void;
-}
-
-export default function ApartmentForm({ onDone }: Props) {
+export default function ApartmentForm({ onDone }: ApartmentFormProps) {
   const router = useRouter();
-  const [form] = Form.useForm<FormValues>();
+  const [form] = Form.useForm<ApartmentFormValues>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
@@ -66,7 +50,7 @@ export default function ApartmentForm({ onDone }: Props) {
     };
   }, [previewUrls]);
 
-  const onFinish = async (values: FormValues) => {
+  const onFinish = async (values: ApartmentFormValues) => {
     setSubmitting(true);
     try {
       const images = fileList

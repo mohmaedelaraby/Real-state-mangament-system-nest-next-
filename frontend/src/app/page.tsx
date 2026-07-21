@@ -8,7 +8,7 @@ import SearchBar from '@/features/apartments/components/SearchBar';
 import FilterSidebar from '@/features/apartments/components/FilterSidebar';
 import { useDebouncedValue } from '@/features/apartments/hooks/useDebouncedValue';
 import { fetchApartments } from '@/features/apartments/api/apartmentsApi';
-import { Apartment } from '@/features/apartments/types/apartment';
+import { Apartment } from '@/features/apartments/interfaces';
 import styles from '@/features/apartments/styles/homePage.module.css';
 
 const PAGE_SIZE = 12;

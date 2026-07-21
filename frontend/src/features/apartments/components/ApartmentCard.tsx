@@ -3,17 +3,13 @@
 import { Typography } from 'antd';
 import { HomeOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import { Apartment } from '../types/apartment';
+import { ApartmentCardProps } from '../interfaces';
 import { formatPrice } from '../constants';
 import styles from '../styles/apartmentCard.module.css';
 
 const { Text } = Typography;
 
-interface Props {
-  apartment: Apartment;
-}
-
-export default function ApartmentCard({ apartment }: Props) {
+export default function ApartmentCard({ apartment }: ApartmentCardProps) {
   const router = useRouter();
   const coverImage = apartment.images[0];
 

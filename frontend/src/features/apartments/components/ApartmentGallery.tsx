@@ -3,13 +3,9 @@
 import { Image } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import styles from '../styles/apartmentGallery.module.css';
+import { ApartmentGalleryProps } from '../interfaces';
 
-interface Props {
-  images: string[];
-  alt: string;
-}
-
-export default function ApartmentGallery({ images, alt }: Props) {
+export default function ApartmentGallery({ images, alt }: ApartmentGalleryProps) {
   if (images.length === 0) {
     return (
       <div className={styles.emptyWrap}>

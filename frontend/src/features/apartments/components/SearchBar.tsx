@@ -3,13 +3,9 @@
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import styles from '../styles/searchBar.module.css';
+import { SearchBarProps } from '../interfaces';
 
-interface Props {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-export default function SearchBar({ value, onChange }: Props) {
+export default function SearchBar({ value, onChange }: SearchBarProps) {
   return (
     <Input
       size="large"

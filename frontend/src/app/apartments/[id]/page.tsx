@@ -6,7 +6,7 @@ import { Descriptions, Skeleton, Typography, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import ApartmentGallery from '@/features/apartments/components/ApartmentGallery';
 import { fetchApartmentById } from '@/features/apartments/api/apartmentsApi';
-import { Apartment } from '@/features/apartments/types/apartment';
+import { Apartment } from '@/features/apartments/interfaces';
 import styles from '@/features/apartments/styles/apartmentDetail.module.css';
 
 const { Title, Paragraph, Link: AntLink } = Typography;

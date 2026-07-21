@@ -3,7 +3,7 @@ import {
   ApartmentQueryParams,
   CreateApartmentPayload,
   PaginatedApartments,
-} from '../types/apartment';
+} from '../interfaces';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
