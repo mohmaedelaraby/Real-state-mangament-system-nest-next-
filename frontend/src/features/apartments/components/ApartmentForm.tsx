@@ -1,15 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button, Col, Form, Input, InputNumber, Row, Select, Upload, message } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import type { UploadFile, UploadProps } from 'antd';
 import { useRouter } from 'next/navigation';
 import { createApartment } from '../api/apartmentsApi';
 import { AREA_OPTIONS, CITIES, PROJECTS } from '../constants';
 import styles from '../styles/apartmentForm.module.css';
 
-const { Dragger } = Upload;
 const { TextArea } = Input;
 
 interface FormValues {
@@ -37,14 +36,35 @@ export default function ApartmentForm({ onDone }: Props) {
 
   const uploadProps: UploadProps = {
     multiple: true,
-    listType: 'picture-card',
     fileList,
+    showUploadList: false,
     beforeUpload: () => false,
     onChange: ({ fileList: newList }) => setFileList(newList),
-    onRemove: (file) => {
-      setFileList((prev) => prev.filter((f) => f.uid !== file.uid));
-    },
   };
+
+  const removeFile = (uid: string) => {
+    setFileList((prev) => prev.filter((f) => f.uid !== uid));
+  };
+
+  const previewUrls = useMemo(() => {
+    const urls = new Map<string, string>();
+    fileList.forEach((file) => {
+      if (file.originFileObj) {
+        urls.set(file.uid, URL.createObjectURL(file.originFileObj));
+      } else if (file.url) {
+        urls.set(file.uid, file.url);
+      }
+    });
+    return urls;
+  }, [fileList]);
+
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach((url) => {
+        if (url.startsWith('blob:')) URL.revokeObjectURL(url);
+      });
+    };
+  }, [previewUrls]);
 
   const onFinish = async (values: FormValues) => {
     setSubmitting(true);
@@ -150,18 +170,40 @@ export default function ApartmentForm({ onDone }: Props) {
       </Form.Item>
 
       <Form.Item label="Photos">
-        <Dragger {...uploadProps}>
-          <p className="ant-upload-drag-icon">
-            <InboxOutlined />
-          </p>
-          <p className="ant-upload-text">Click or drag images here to upload</p>
-          <p className="ant-upload-hint">Supports multiple images. Uploaded on submit.</p>
-        </Dragger>
+        <Upload {...uploadProps}>
+          {fileList.length === 0 ? (
+            <div className={styles.uploadTrigger}>
+              <PlusOutlined />
+              <div>Upload</div>
+            </div>
+          ) : (
+            <div className={styles.uploadedFile}>
+              {fileList.map((file) => (
+                <div key={file.uid} className={styles.previewItem} onClick={(e) => e.stopPropagation()}>
+                  <img src={previewUrls.get(file.uid)} alt="Preview" className={styles.previewImage} />
+                  <button
+                    type="button"
+                    className={styles.previewRemove}
+                    onClick={() => removeFile(file.uid)}
+                  >
+                    <CloseOutlined />
+                  </button>
+                </div>
+              ))}
+              <div className={styles.uploadTrigger}>
+                <PlusOutlined />
+                <div>Add more</div>
+              </div>
+            </div>
+          )}
+        </Upload>
       </Form.Item>
+
+
 
       <Form.Item>
         <Button type="primary" htmlType="submit" loading={submitting} block size="large">
-          Publish listing
+          Add Unit
         </Button>
       </Form.Item>
     </Form>

@@ -20,7 +20,7 @@ export default function PageHeader() {
         <div className={styles.spacer} />
         <nav className={styles.nav}>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsFormOpen(true)}>
-            List a unit
+            Add a unit
           </Button>
         </nav>
       </div>
