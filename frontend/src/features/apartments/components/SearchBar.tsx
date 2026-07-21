@@ -2,6 +2,7 @@
 
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import styles from '../styles/searchBar.module.css';
 
 interface Props {
   value: string;
@@ -14,10 +15,10 @@ export default function SearchBar({ value, onChange }: Props) {
       size="large"
       allowClear
       placeholder="Search by name, unit number, or project..."
-      prefix={<SearchOutlined style={{ opacity: 0.4 }} />}
+      prefix={<SearchOutlined className={styles.searchIcon} />}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      style={{ maxWidth: 520, borderRadius: 13, padding: '10px 16px' }}
+      className={styles.input}
     />
   );
 }

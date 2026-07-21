@@ -1,0 +1,36 @@
+.emptyWrap {
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
+  border-radius: 8px;
+}
+
+.emptyIcon {
+  font-size: 64px;
+  color: #bfbfbf;
+}
+
+.galleryWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mainImage {
+  object-fit: cover;
+  border-radius: 8px;
+  max-width: 100%;
+}
+
+.thumbsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.thumb {
+  object-fit: cover;
+  border-radius: 8px;
+}

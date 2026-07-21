@@ -1,3 +1,5 @@
+export const NAWY_GREEN = '#0f6b5c';
+
 export const PROJECTS = ['Marassi', 'Palm Hills', 'Mivida', 'ZED East', 'Hyde Park', 'O West'];
 
 export const CITIES = ['North Coast', 'New Cairo', '6th of October', 'Sheikh Zayed', 'New Capital'];

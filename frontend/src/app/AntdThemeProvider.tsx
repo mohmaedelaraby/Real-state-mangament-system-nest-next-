@@ -1,8 +1,7 @@
 'use client';
 
 import { ConfigProvider } from 'antd';
-
-const NAWY_GREEN = '#0f6b5c';
+import { NAWY_GREEN } from '@/features/apartments/constants';
 
 export default function AntdThemeProvider({ children }: { children: React.ReactNode }) {
   return (

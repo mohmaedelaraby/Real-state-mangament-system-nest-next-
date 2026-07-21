@@ -2,8 +2,7 @@
 
 import { CheckOutlined } from '@ant-design/icons';
 import { PROJECTS, CITIES } from '../constants';
-
-const NAWY_GREEN = '#0f6b5c';
+import styles from '../styles/filterSidebar.module.css';
 
 interface Props {
   project: string;
@@ -24,62 +23,21 @@ function FilterGroup({
   onSelect: (value: string) => void;
 }) {
   return (
-    <div style={{ marginBottom: 22 }}>
-      <div
-        style={{
-          fontSize: 12,
-          fontWeight: 700,
-          color: 'rgba(0, 0, 0, 0.4)',
-          textTransform: 'uppercase',
-          letterSpacing: '.06em',
-          marginBottom: 10,
-        }}
-      >
-        {title}
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+    <div className={styles.group}>
+      <div className={styles.groupTitle}>{title}</div>
+      <div className={styles.itemsList}>
         {items.map((value) => {
           const on = selected === value;
           return (
             <div
               key={value}
               onClick={() => onSelect(on ? '' : value)}
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: 9,
-                padding: '7px 8px',
-                borderRadius: 8,
-                cursor: 'pointer',
-                background: on ? 'rgba(15, 107, 92, 0.09)' : 'transparent',
-              }}
+              className={`${styles.item} ${on ? styles.itemActive : ''}`}
             >
-              <div
-                style={{
-                  width: 15,
-                  height: 15,
-                  borderRadius: 4,
-                  border: on ? 'none' : '1.5px solid rgba(0, 0, 0, 0.25)',
-                  background: on ? NAWY_GREEN : 'transparent',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flex: 'none',
-                  marginTop: 1,
-                }}
-              >
-                {on ? <CheckOutlined style={{ color: '#fff', fontSize: 10 }} /> : null}
+              <div className={`${styles.checkbox} ${on ? styles.checkboxActive : ''}`}>
+                {on ? <CheckOutlined className={styles.checkIcon} /> : null}
               </div>
-              <span
-                style={{
-                  fontSize: 13.5,
-                  fontWeight: on ? 700 : 500,
-                  color: on ? NAWY_GREEN : 'rgba(0, 0, 0, 0.68)',
-                  lineHeight: 1.35,
-                }}
-              >
-                {value}
-              </span>
+              <span className={`${styles.label} ${on ? styles.labelActive : ''}`}>{value}</span>
             </div>
           );
         })}
@@ -92,32 +50,16 @@ export default function FilterSidebar({ project, city, onProjectChange, onCityCh
   const hasFilter = Boolean(project || city);
 
   return (
-    <div
-      style={{
-        position: 'sticky',
-        top: 80,
-        background: '#fff',
-        border: '1px solid rgba(0, 0, 0, 0.06)',
-        borderRadius: 16,
-        padding: '18px 16px',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: 6,
-        }}
-      >
-        <div style={{ fontSize: 15, fontWeight: 800 }}>Filters</div>
+    <div className={styles.sidebar}>
+      <div className={styles.headerRow}>
+        <div className={styles.headerTitle}>Filters</div>
         {hasFilter ? (
           <span
             onClick={() => {
               onProjectChange('');
               onCityChange('');
             }}
-            style={{ fontSize: 12, fontWeight: 700, color: NAWY_GREEN, cursor: 'pointer' }}
+            className={styles.clear}
           >
             Clear
           </span>

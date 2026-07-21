@@ -1,0 +1,9 @@
+.input {
+  max-width: 520px;
+  border-radius: 13px;
+  padding: 10px 16px;
+}
+
+.searchIcon {
+  opacity: 0.4;
+}

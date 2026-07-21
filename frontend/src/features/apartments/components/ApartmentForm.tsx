@@ -7,6 +7,7 @@ import type { UploadFile, UploadProps } from 'antd';
 import { useRouter } from 'next/navigation';
 import { createApartment } from '../api/apartmentsApi';
 import { AREA_OPTIONS, CITIES, PROJECTS } from '../constants';
+import styles from '../styles/apartmentForm.module.css';
 
 const { Dragger } = Upload;
 const { TextArea } = Input;
@@ -24,7 +25,11 @@ interface FormValues {
   baths: number;
 }
 
-export default function ApartmentForm() {
+interface Props {
+  onDone?: () => void;
+}
+
+export default function ApartmentForm({ onDone }: Props) {
   const router = useRouter();
   const [form] = Form.useForm<FormValues>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -50,6 +55,7 @@ export default function ApartmentForm() {
 
       const apartment = await createApartment({ ...values, images });
       message.success('Apartment created successfully');
+      onDone?.();
       router.push(`/apartments/${apartment.id}`);
     } catch (err) {
       message.error(err instanceof Error ? err.message : 'Failed to create apartment');
@@ -112,17 +118,17 @@ export default function ApartmentForm() {
         </Col>
         <Col xs={12} sm={6}>
           <Form.Item name="beds" label="Beds" rules={[{ required: true, message: 'Enter beds' }]}>
-            <InputNumber min={0} style={{ width: '100%' }} placeholder="2" />
+            <InputNumber min={0} className={styles.fullWidth} placeholder="2" />
           </Form.Item>
         </Col>
         <Col xs={12} sm={6}>
           <Form.Item name="baths" label="Baths" rules={[{ required: true, message: 'Enter baths' }]}>
-            <InputNumber min={0} style={{ width: '100%' }} placeholder="2" />
+            <InputNumber min={0} className={styles.fullWidth} placeholder="2" />
           </Form.Item>
         </Col>
         <Col xs={12} sm={6}>
           <Form.Item name="price" label="Price (EGP)" rules={[{ required: true, message: 'Enter price' }]}>
-            <InputNumber min={0} style={{ width: '100%' }} placeholder="3000000" />
+            <InputNumber min={0} className={styles.fullWidth} placeholder="3000000" />
           </Form.Item>
         </Col>
       </Row>

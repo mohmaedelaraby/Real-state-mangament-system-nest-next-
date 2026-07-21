@@ -1,0 +1,42 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 36px 24px 56px;
+}
+
+.heroBlock {
+  margin-bottom: 26px;
+}
+
+.heroTitle {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.heroSubtitle {
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 6px;
+}
+
+.searchWrap {
+  margin-bottom: 28px;
+}
+
+.resultsCount {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.emptyState {
+  margin-top: 80px;
+}
+
+.paginationWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}

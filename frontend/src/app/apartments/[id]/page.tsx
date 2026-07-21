@@ -7,6 +7,7 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import ApartmentGallery from '@/features/apartments/components/ApartmentGallery';
 import { fetchApartmentById } from '@/features/apartments/api/apartmentsApi';
 import { Apartment } from '@/features/apartments/types/apartment';
+import styles from '@/features/apartments/styles/apartmentDetail.module.css';
 
 const { Title, Paragraph, Link: AntLink } = Typography;
 
@@ -38,8 +39,8 @@ export default function ApartmentDetailsPage() {
   }, [params.id]);
 
   return (
-    <div style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
-      <AntLink onClick={() => router.push('/')} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 16 }}>
+    <div className={styles.container}>
+      <AntLink onClick={() => router.push('/')} className={styles.backLink}>
         <ArrowLeftOutlined /> Back to listing
       </AntLink>
 
@@ -50,7 +51,7 @@ export default function ApartmentDetailsPage() {
       ) : (
         <>
           <ApartmentGallery images={apartment.images} alt={apartment.name} />
-          <Title level={2} style={{ marginTop: 24 }}>
+          <Title level={2} className={styles.title}>
             {apartment.name}
           </Title>
           <Paragraph>{apartment.description}</Paragraph>

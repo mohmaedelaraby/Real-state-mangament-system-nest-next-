@@ -9,6 +9,7 @@ import FilterSidebar from '@/features/apartments/components/FilterSidebar';
 import { useDebouncedValue } from '@/features/apartments/hooks/useDebouncedValue';
 import { fetchApartments } from '@/features/apartments/api/apartmentsApi';
 import { Apartment } from '@/features/apartments/types/apartment';
+import styles from '@/features/apartments/styles/homePage.module.css';
 
 const PAGE_SIZE = 12;
 
@@ -50,17 +51,15 @@ export default function HomePage() {
   return (
     <div>
       <PageHeader />
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '36px 24px 56px' }}>
-        <div style={{ marginBottom: 26 }}>
-          <div style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-0.03em' }}>
-            Find your next place
-          </div>
-          <div style={{ fontSize: 15, color: 'rgba(0, 0, 0, 0.5)', marginTop: 6 }}>
+      <div className={styles.container}>
+        <div className={styles.heroBlock}>
+          <div className={styles.heroTitle}>Find your next place</div>
+          <div className={styles.heroSubtitle}>
             {total} curated unit{total === 1 ? '' : 's'} across Egypt&apos;s top compounds
           </div>
         </div>
 
-        <div style={{ marginBottom: 28 }}>
+        <div className={styles.searchWrap}>
           <SearchBar value={search} onChange={setSearch} />
         </div>
 
@@ -76,7 +75,7 @@ export default function HomePage() {
 
           <Col xs={24} md={17} lg={18}>
             {!loading && (
-              <div style={{ fontSize: 13, color: 'rgba(0, 0, 0, 0.45)', marginBottom: 16, fontWeight: 600 }}>
+              <div className={styles.resultsCount}>
                 {total} result{total === 1 ? '' : 's'}
                 {debouncedSearch ? ` for "${debouncedSearch}"` : ''}
               </div>
@@ -91,7 +90,7 @@ export default function HomePage() {
                 ))}
               </Row>
             ) : apartments.length === 0 ? (
-              <Empty description="No apartments found" style={{ marginTop: 80 }} />
+              <Empty description="No apartments found" className={styles.emptyState} />
             ) : (
               <>
                 <Row gutter={[20, 20]}>
@@ -101,7 +100,7 @@ export default function HomePage() {
                     </Col>
                   ))}
                 </Row>
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 32 }}>
+                <div className={styles.paginationWrap}>
                   <Pagination
                     current={page}
                     pageSize={PAGE_SIZE}
