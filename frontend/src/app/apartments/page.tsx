@@ -18,7 +18,7 @@ interface Props {
   }>;
 }
 
-export default async function HomePage({ searchParams }: Props) {
+export default async function ApartmentsPage({ searchParams }: Props) {
   const params = await searchParams;
   const search = params.search ?? '';
   const project = params.project ?? '';

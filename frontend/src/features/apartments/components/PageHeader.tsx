@@ -13,7 +13,7 @@ export default function PageHeader() {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logoLink}>
+        <Link href="/apartments" className={styles.logoLink}>
           <div className={styles.logoBadge}>N</div>
           <div className={styles.logoText}>nawy</div>
         </Link>

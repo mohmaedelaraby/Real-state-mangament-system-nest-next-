@@ -2,7 +2,7 @@ import { Col, Row, Skeleton } from 'antd';
 import PageHeader from '@/features/apartments/components/PageHeader';
 import styles from '@/features/apartments/styles/homePage.module.css';
 
-export default function HomeLoading() {
+export default function ApartmentsLoading() {
   return (
     <div>
       <PageHeader />

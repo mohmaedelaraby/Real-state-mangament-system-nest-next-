@@ -17,7 +17,6 @@ export default function ApartmentCard({ apartment }: ApartmentCardProps) {
     <div className={styles.card} onClick={() => router.push(`/apartments/${apartment.id}`)}>
       <div className={styles.imageWrap}>
         {coverImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={coverImage} alt={apartment.name} className={styles.image} />
         ) : (
           <div className={styles.imagePlaceholder}>

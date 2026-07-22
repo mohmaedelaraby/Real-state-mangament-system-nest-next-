@@ -2,7 +2,7 @@
 
 import { Button, Result } from 'antd';
 
-export default function HomeError({ error, reset }: { error: Error; reset: () => void }) {
+export default function ApartmentsError({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <Result
       status="error"
