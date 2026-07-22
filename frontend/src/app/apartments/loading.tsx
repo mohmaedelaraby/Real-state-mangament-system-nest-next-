@@ -6,6 +6,7 @@ export default function ApartmentsLoading() {
   return (
     <div>
       <PageHeader />
+
       <div className={styles.container}>
         <div className={styles.heroBlock}>
           <div className={styles.heroTitle}>Find your next place</div>
