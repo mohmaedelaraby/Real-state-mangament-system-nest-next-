@@ -6,10 +6,6 @@ import {
 } from '../interfaces';
 
 
-// Server-side (SSR) calls run inside the Next.js server process, which in Docker is a
-// separate container from the backend, so it must reach it via the internal service
-// name (API_INTERNAL_URL=http://backend:3001) rather than the browser-facing URL.
-// Client-side calls run in the user's browser and need the public URL instead.
 const API_BASE_URL =
   typeof window === 'undefined'
     ? process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001'

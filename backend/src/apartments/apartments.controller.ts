@@ -8,8 +8,7 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { memoryStorage } from 'multer';
+import { ImageUploadInterceptor } from '../common/interceptors/image-upload.interceptor';
 import { ApartmentsService } from './apartments.service';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
 import { QueryApartmentsDto } from './dto/query-apartments.dto';
@@ -40,13 +39,12 @@ export class ApartmentsController {
 
   /**
    * POST /apartments
-   * multipart/form-data: text fields per CreateApartmentDto + up to 10 files
-   * under the `images` field. Images are buffered in memory (not written to
-   * local disk) and streamed straight to MinIO — see StorageService.
+   * multipart/form-data: text fields per CreateApartmentDto + up to 10 image
+   * ImageUploadInterceptor for the upload/validation rules.
    * @returns the created apartment (201), including public image URLs.
    */
   @Post()
-  @UseInterceptors(FilesInterceptor('images', 10, { storage: memoryStorage() }))
+  @UseInterceptors(ImageUploadInterceptor('images', 10))
   create(
     @Body() dto: CreateApartmentDto,
     @UploadedFiles() images: Express.Multer.File[],

@@ -8,7 +8,7 @@
   padding: 18px 16px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .sidebar {
     /* Stacks full-width above the card grid at this breakpoint (see the
        xs={24} Col in apartments/page.tsx) — sticky here would pin the whole
@@ -67,7 +67,7 @@
   background: transparent;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   /* A vertical checklist for two ~6-item groups eats a lot of height when
      it's stacked full-width above the results on mobile, so switch to
      wrapping chips instead — same behavior, far more compact. */

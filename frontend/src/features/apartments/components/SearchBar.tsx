@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
@@ -11,10 +11,15 @@ export default function SearchBar() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [value, setValue] = useState(searchParams.get('search') ?? '');
+  const urlSearch = searchParams.get('search') ?? '';
+  const [value, setValue] = useState(urlSearch);
   const debouncedValue = useDebouncedValue(value, 400);
+  const committedRef = useRef(urlSearch);
 
   useEffect(() => {
+    if (debouncedValue === committedRef.current) return;
+    committedRef.current = debouncedValue;
+
     const params = new URLSearchParams(searchParams.toString());
     if (debouncedValue) {
       params.set('search', debouncedValue);

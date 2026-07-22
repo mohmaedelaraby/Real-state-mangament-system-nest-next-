@@ -1,16 +1,12 @@
 'use client';
 
 import { Descriptions, Typography } from 'antd';
-import { Apartment } from '../interfaces';
+import { ApartmentDetailsProps } from '../interfaces';
 import styles from '../styles/apartmentDetail.module.css';
 
 const { Title, Paragraph } = Typography;
 
-interface Props {
-  apartment: Apartment;
-}
-
-export default function ApartmentDetails({ apartment }: Props) {
+export default function ApartmentDetails({ apartment }: ApartmentDetailsProps) {
   return (
     <>
       <Title level={2} className={styles.title}>

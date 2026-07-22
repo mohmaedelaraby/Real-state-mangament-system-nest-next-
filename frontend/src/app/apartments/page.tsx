@@ -57,40 +57,42 @@ export default async function ApartmentsPage({ searchParams }: Props) {
           <SearchBar />
         </div>
 
-        {apartments.length === 0 ? (
-          <Empty
-            description="No apartments found"
-            className={styles.emptyState}
-          />
-        ) : (
-          <Row gutter={[32, 24]}>
-            <Col xs={24} md={7} lg={6}>
-              <FilterSidebar />
-            </Col>
+        <Row gutter={[32, 24]}>
+          <Col xs={24} md={7} lg={6}>
+            <FilterSidebar />
+          </Col>
 
-            <Col xs={24} md={17} lg={18}>
-              <div className={styles.resultsCount}>
-                {total} result{total === 1 ? "" : "s"}
-                {search ? ` for "${search}"` : ""}
-              </div>
+          <Col xs={24} md={17} lg={18}>
+            <div className={styles.resultsCount}>
+              {total} result{total === 1 ? "" : "s"}
+              {search ? ` for "${search}"` : ""}
+            </div>
 
-              <Row gutter={[20, 20]}>
-                {apartments.map((apartment) => (
-                  <Col key={apartment.id} xs={24} sm={12} lg={8}>
-                    <ApartmentCard apartment={apartment} />
-                  </Col>
-                ))}
-              </Row>
-              <div className={styles.paginationWrap}>
-                <ApartmentPagination
-                  current={page}
-                  pageSize={PAGE_SIZE}
-                  total={total}
-                />
-              </div>
-            </Col>
-          </Row>
-        )}
+            {apartments.length === 0 ? (
+              <Empty
+                description="No apartments found"
+                className={styles.emptyState}
+              />
+            ) : (
+              <>
+                <Row gutter={[20, 20]}>
+                  {apartments.map((apartment) => (
+                    <Col key={apartment.id} xs={24} sm={12} lg={8}>
+                      <ApartmentCard apartment={apartment} />
+                    </Col>
+                  ))}
+                </Row>
+                <div className={styles.paginationWrap}>
+                  <ApartmentPagination
+                    current={page}
+                    pageSize={PAGE_SIZE}
+                    total={total}
+                  />
+                </div>
+              </>
+            )}
+          </Col>
+        </Row>
       </div>
     </div>
   );
