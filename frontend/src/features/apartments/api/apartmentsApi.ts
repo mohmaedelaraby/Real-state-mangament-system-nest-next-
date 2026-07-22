@@ -11,25 +11,13 @@ const API_BASE_URL =
     ? process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001'
     : process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
 
-async function handleResponse<T>(res: Response): Promise<T> {
-  if (!res.ok) {
-    let message = `Request failed with status ${res.status}`;
-    try {
-      const body = await res.json();
-      if (body?.message) {
-        message = Array.isArray(body.message) ? body.message.join(', ') : body.message;
-      }
-    } catch {
-      // response body wasn't JSON, keep the default message
-    }
-    throw new Error(message);
-  }
-  return res.json() as Promise<T>;
-}
+
 
 export async function fetchApartments(
   params: ApartmentQueryParams = {},
 ): Promise<PaginatedApartments> {
+    console.log('fetch all')
+
   const query = new URLSearchParams();
   if (params.search) query.set('search', params.search);
   if (params.project) query.set('project', params.project);
@@ -38,13 +26,15 @@ export async function fetchApartments(
   query.set('limit', String(params.limit ?? 12));
 
   const res = await fetch(`${API_BASE_URL}/apartments?${query.toString()}`);
-  return handleResponse<PaginatedApartments>(res);
+  return res.json();
 }
 
 export async function fetchApartmentById(id: string): Promise<Apartment | null> {
+    console.log('fetch oce')
+
   const res = await fetch(`${API_BASE_URL}/apartments/${id}`);
   if (res.status === 404) return null;
-  return handleResponse<Apartment>(res);
+  return res.json();
 }
 
 export async function createApartment(payload: CreateApartmentPayload): Promise<Apartment> {
@@ -65,5 +55,5 @@ export async function createApartment(payload: CreateApartmentPayload): Promise<
     method: 'POST',
     body: formData,
   });
-  return handleResponse<Apartment>(res);
+  return res.json();
 }

@@ -13,10 +13,10 @@ export default function PageHeader() {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <Link href="/apartments" className={styles.logoLink}>
+        <div className={styles.logoLink}>
           <div className={styles.logoBadge}>N</div>
           <div className={styles.logoText}>nawy</div>
-        </Link>
+        </div>
         <div className={styles.spacer} />
         <nav className={styles.nav}>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsFormOpen(true)}>
