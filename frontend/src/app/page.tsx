@@ -1,52 +1,37 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { Col, Empty, Pagination, Row, Skeleton, message } from 'antd';
+import { Col, Empty, Row } from 'antd';
 import PageHeader from '@/features/apartments/components/PageHeader';
 import ApartmentCard from '@/features/apartments/components/ApartmentCard';
+import ApartmentPagination from '@/features/apartments/components/ApartmentPagination';
 import SearchBar from '@/features/apartments/components/SearchBar';
 import FilterSidebar from '@/features/apartments/components/FilterSidebar';
-import { useDebouncedValue } from '@/features/apartments/hooks/useDebouncedValue';
 import { fetchApartments } from '@/features/apartments/api/apartmentsApi';
-import { Apartment } from '@/features/apartments/interfaces';
 import styles from '@/features/apartments/styles/homePage.module.css';
 
 const PAGE_SIZE = 12;
 
-export default function HomePage() {
-  const [search, setSearch] = useState('');
-  const debouncedSearch = useDebouncedValue(search, 400);
-  const [project, setProject] = useState('');
-  const [city, setCity] = useState('');
-  const [page, setPage] = useState(1);
-  const [apartments, setApartments] = useState<Apartment[]>([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+interface Props {
+  searchParams: Promise<{
+    search?: string;
+    project?: string;
+    city?: string;
+    page?: string;
+  }>;
+}
 
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedSearch, project, city]);
+export default async function HomePage({ searchParams }: Props) {
+  const params = await searchParams;
+  const search = params.search ?? '';
+  const project = params.project ?? '';
+  const city = params.city ?? '';
+  const page = Number(params.page ?? '1') || 1;
 
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    fetchApartments({ search: debouncedSearch, project, city, page, limit: PAGE_SIZE })
-      .then((res) => {
-        if (cancelled) return;
-        setApartments(res.data);
-        setTotal(res.total);
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        message.error(err instanceof Error ? err.message : 'Failed to load apartments');
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [debouncedSearch, project, city, page]);
+  const { data: apartments, total } = await fetchApartments({
+    search,
+    project,
+    city,
+    page,
+    limit: PAGE_SIZE,
+  });
 
   return (
     <div>
@@ -60,36 +45,21 @@ export default function HomePage() {
         </div>
 
         <div className={styles.searchWrap}>
-          <SearchBar value={search} onChange={setSearch} />
+          <SearchBar />
         </div>
 
         <Row gutter={[32, 24]}>
           <Col xs={24} md={7} lg={6}>
-            <FilterSidebar
-              project={project}
-              city={city}
-              onProjectChange={setProject}
-              onCityChange={setCity}
-            />
+            <FilterSidebar />
           </Col>
 
           <Col xs={24} md={17} lg={18}>
-            {!loading && (
-              <div className={styles.resultsCount}>
-                {total} result{total === 1 ? '' : 's'}
-                {debouncedSearch ? ` for "${debouncedSearch}"` : ''}
-              </div>
-            )}
+            <div className={styles.resultsCount}>
+              {total} result{total === 1 ? '' : 's'}
+              {search ? ` for "${search}"` : ''}
+            </div>
 
-            {loading ? (
-              <Row gutter={[20, 20]}>
-                {Array.from({ length: 6 }).map((_, idx) => (
-                  <Col key={idx} xs={24} sm={12} lg={8}>
-                    <Skeleton active paragraph={{ rows: 3 }} />
-                  </Col>
-                ))}
-              </Row>
-            ) : apartments.length === 0 ? (
+            {apartments.length === 0 ? (
               <Empty description="No apartments found" className={styles.emptyState} />
             ) : (
               <>
@@ -101,13 +71,7 @@ export default function HomePage() {
                   ))}
                 </Row>
                 <div className={styles.paginationWrap}>
-                  <Pagination
-                    current={page}
-                    pageSize={PAGE_SIZE}
-                    total={total}
-                    onChange={setPage}
-                    showSizeChanger={false}
-                  />
+                  <ApartmentPagination current={page} pageSize={PAGE_SIZE} total={total} />
                 </div>
               </>
             )}

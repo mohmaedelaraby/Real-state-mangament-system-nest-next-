@@ -1,9 +1,10 @@
 'use client';
 
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { CheckOutlined } from '@ant-design/icons';
 import { PROJECTS, CITIES } from '../constants';
 import styles from '../styles/filterSidebar.module.css';
-import { FilterGroupProps, FilterSidebarProps } from '../interfaces';
+import { FilterGroupProps } from '../interfaces';
 
 function FilterGroup({ title, items, selected, onSelect }: FilterGroupProps) {
   return (
@@ -30,27 +31,59 @@ function FilterGroup({ title, items, selected, onSelect }: FilterGroupProps) {
   );
 }
 
-export default function FilterSidebar({ project, city, onProjectChange, onCityChange }: FilterSidebarProps) {
+export default function FilterSidebar() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const project = searchParams.get('project') ?? '';
+  const city = searchParams.get('city') ?? '';
   const hasFilter = Boolean(project || city);
+
+  const updateParam = (key: 'project' | 'city', value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    params.delete('page');
+
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname);
+  };
+
+  const clearFilters = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('project');
+    params.delete('city');
+    params.delete('page');
+
+    const query = params.toString();
+    router.push(query ? `${pathname}?${query}` : pathname);
+  };
 
   return (
     <div className={styles.sidebar}>
       <div className={styles.headerRow}>
         <div className={styles.headerTitle}>Filters</div>
         {hasFilter ? (
-          <span
-            onClick={() => {
-              onProjectChange('');
-              onCityChange('');
-            }}
-            className={styles.clear}
-          >
+          <span onClick={clearFilters} className={styles.clear}>
             Clear
           </span>
         ) : null}
       </div>
-      <FilterGroup title="Project" items={PROJECTS} selected={project} onSelect={onProjectChange} />
-      <FilterGroup title="City" items={CITIES} selected={city} onSelect={onCityChange} />
+      <FilterGroup
+        title="Project"
+        items={PROJECTS}
+        selected={project}
+        onSelect={(value) => updateParam('project', value)}
+      />
+      <FilterGroup
+        title="City"
+        items={CITIES}
+        selected={city}
+        onSelect={(value) => updateParam('city', value)}
+      />
     </div>
   );
 }
