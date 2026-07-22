@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Button, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import Link from 'next/link';
 import ApartmentForm from './ApartmentForm';
 import styles from '../styles/pageHeader.module.css';
 
@@ -15,7 +14,7 @@ export default function PageHeader() {
       <div className={styles.container}>
         <div className={styles.logoLink}>
           <div className={styles.logoBadge}>N</div>
-          <div className={styles.logoText}>nawy</div>
+          <div className={styles.logoText}>Nawy</div>
         </div>
         <div className={styles.spacer} />
         <nav className={styles.nav}>

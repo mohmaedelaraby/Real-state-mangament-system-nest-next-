@@ -25,7 +25,6 @@ export default function SearchBar() {
 
     const query = params.toString();
     router.replace(query ? `${pathname}?${query}` : pathname);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
   return (
