@@ -16,22 +16,19 @@ const API_BASE_URL =
 export async function fetchApartments(
   params: ApartmentQueryParams = {},
 ): Promise<PaginatedApartments> {
-    console.log('fetch all')
 
   const query = new URLSearchParams();
   if (params.search) query.set('search', params.search);
   if (params.project) query.set('project', params.project);
   if (params.city) query.set('city', params.city);
   query.set('page', String(params.page ?? 1));
-  query.set('limit', String(params.limit ?? 12));
+  query.set('limit', String(params.limit ?? 9));
 
   const res = await fetch(`${API_BASE_URL}/apartments?${query.toString()}`);
   return res.json();
 }
 
 export async function fetchApartmentById(id: string): Promise<Apartment | null> {
-    console.log('fetch oce')
-
   const res = await fetch(`${API_BASE_URL}/apartments/${id}`);
   if (res.status === 404) return null;
   return res.json();

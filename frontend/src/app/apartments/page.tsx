@@ -7,7 +7,7 @@ import FilterSidebar from "@/features/apartments/components/FilterSidebar";
 import { fetchApartments } from "@/features/apartments/api/apartmentsApi";
 import styles from "@/features/apartments/styles/homePage.module.css";
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 9;
 
 interface Props {
   searchParams: Promise<{
