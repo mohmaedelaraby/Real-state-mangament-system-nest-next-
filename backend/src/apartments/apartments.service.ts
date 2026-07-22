@@ -3,6 +3,7 @@ import { CreateApartmentDto } from './dto/create-apartment.dto';
 import { QueryApartmentsDto } from './dto/query-apartments.dto';
 import { ApartmentsRepository } from './apartments.repository';
 
+
 @Injectable()
 export class ApartmentsService {
   constructor(
@@ -13,6 +14,7 @@ export class ApartmentsService {
     return this.apartmentsRepository.findAll(query);
   }
 
+  /** @throws NotFoundException if no apartment exists with the given id. */
   async findOne(id: string) {
     const apartment = await this.apartmentsRepository.findOne(id);
     if (!apartment) {

@@ -13,6 +13,13 @@ export class ApartmentsRepository {
     readonly storage: StorageService
   ) {}
 
+  /**
+   * Paginated, filtered apartment list. `search` matches `name`, `unitNumber`,
+   * or `project` (OR'd together); `project`/`city` narrow further (AND'd with
+   * search). All string matches are case-insensitive partial matches via
+   * Prisma's `contains` + `insensitive` mode, so filtering happens in Postgres
+   * rather than over the full dataset in memory.
+   */
    async findAll(query: QueryApartmentsDto) {
       const page = query.page ?? 1;
       const limit = query.limit ?? 12;
@@ -56,11 +63,13 @@ export class ApartmentsRepository {
     }
   
 
+     /** Returns `null` when not found — the 404 decision belongs to the service, not here. */
      async findOne(id: string) {
         const apartment = await this.prisma.apartment.findUnique({ where: { id } });
         return apartment;
       }
-    
+
+      /** Uploads any attached images to MinIO first, then persists the row with the resulting public URLs. */
       async create(dto: CreateApartmentDto, files: Express.Multer.File[]) {
         const images = files && files.length > 0 ? await this.storage.uploadFiles(files) : [];
     
