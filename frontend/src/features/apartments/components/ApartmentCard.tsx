@@ -2,19 +2,18 @@
 
 import { Typography } from 'antd';
 import { HomeOutlined, EnvironmentOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/navigation';
 import { ApartmentCardProps } from '../interfaces';
 import { formatPrice } from '../constants';
+import { useApartmentCard } from '../hooks/useApartmentCard';
 import styles from '../styles/apartmentCard.module.css';
 
 const { Text } = Typography;
 
 export default function ApartmentCard({ apartment }: ApartmentCardProps) {
-  const router = useRouter();
-  const coverImage = apartment.images[0];
+  const { coverImage, goToDetails } = useApartmentCard(apartment);
 
   return (
-    <div className={styles.card} onClick={() => router.push(`/apartments/${apartment.id}`)}>
+    <div className={styles.card} onClick={goToDetails}>
       <div className={styles.imageWrap}>
         {coverImage ? (
           <img src={coverImage} alt={apartment.name} className={styles.image} />

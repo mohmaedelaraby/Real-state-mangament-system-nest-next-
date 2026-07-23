@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
 import { Button, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ApartmentForm from './ApartmentForm';
+import { usePageHeader } from '../hooks/usePageHeader';
 import styles from '../styles/pageHeader.module.css';
 
 export default function PageHeader() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const { isFormOpen, openForm, closeForm } = usePageHeader();
 
   return (
     <header className={styles.header}>
@@ -18,7 +18,7 @@ export default function PageHeader() {
         </div>
         <div className={styles.spacer} />
         <nav className={styles.nav}>
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsFormOpen(true)}>
+          <Button type="primary" icon={<PlusOutlined />} onClick={openForm}>
             Add a unit
           </Button>
         </nav>
@@ -27,13 +27,13 @@ export default function PageHeader() {
       <Modal
         title="Add Apartment"
         open={isFormOpen}
-        onCancel={() => setIsFormOpen(false)}
+        onCancel={closeForm}
         footer={null}
         width={720}
         centered
         destroyOnHidden
       >
-        <ApartmentForm onDone={() => setIsFormOpen(false)} />
+        <ApartmentForm onDone={closeForm} />
       </Modal>
     </header>
   );

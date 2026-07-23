@@ -1,8 +1,8 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { CheckOutlined } from '@ant-design/icons';
 import { PROJECTS, CITIES } from '../constants';
+import { useFilterSidebar } from '../hooks/useFilterSidebar';
 import styles from '../styles/filterSidebar.module.css';
 import { FilterGroupProps } from '../interfaces';
 
@@ -32,35 +32,7 @@ function FilterGroup({ title, items, selected, onSelect }: FilterGroupProps) {
 }
 
 export default function FilterSidebar() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const project = searchParams.get('project') ?? '';
-  const city = searchParams.get('city') ?? '';
-  const hasFilter = Boolean(project || city);
-
-  const updateParam = (key: 'project' | 'city', value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
-    params.delete('page');
-
-    const query = params.toString();
-    router.push(query ? `${pathname}?${query}` : pathname);
-  };
-
-  const clearFilters = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete('project');
-    params.delete('city');
-    params.delete('page');
-
-    const query = params.toString();
-    router.push(query ? `${pathname}?${query}` : pathname);
-  };
+  const { project, city, hasFilter, updateParam, clearFilters } = useFilterSidebar();
 
   return (
     <div className={styles.sidebar}>
