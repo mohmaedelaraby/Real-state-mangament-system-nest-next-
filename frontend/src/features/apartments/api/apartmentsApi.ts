@@ -8,12 +8,16 @@ import {
 } from '../interfaces';
 
 
+const DEFAULT_API_BASE_URL = 'http://127.0.0.1:3001';
+
+// SSR fetches run inside the frontend container, so use API_INTERNAL_URL 
+// (the backend's Compose service name) — not NEXT_PUBLIC_API_URL, which only the browser can reach.
 const API_BASE_URL =
   typeof window === 'undefined'
-    ? process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001'
-    : process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
+    ? process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_BASE_URL
+    : process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_BASE_URL;
 
-/** Parses a response, throwing with the backend's `message` (see AllExceptionsFilter's error shape) on a non-2xx status instead of returning the error body as if it were success data. */
+/** Parses a response, throwing with the backend's `message` (see AllExceptionsFilter's error shape) */
 async function parseResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
     let message = `Request failed with status ${res.status}`;
@@ -30,7 +34,7 @@ async function parseResponse<T>(res: Response): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-/** Called server-side from `app/apartments/page.tsx` on every request (searchParams make the route dynamic — see README's SSR architecture section). */
+/** Called server-side from `app/apartments/page.tsx`  */
 export async function fetchApartments(
   params: ApartmentQueryParams = {},
 ): Promise<PaginatedApartments> {
@@ -47,7 +51,7 @@ export async function fetchApartments(
   return body.data;
 }
 
-/** Called server-side from `app/apartments/[id]/page.tsx`. Returns `null` (not a throw) on 404 so the page can call Next's `notFound()` and render `not-found.tsx`. */
+/** Called server-side from `app/apartments/[id]/page.tsx` */
 export async function fetchApartmentById(id: string): Promise<Apartment | null> {
   const res = await fetch(`${API_BASE_URL}/apartments/${id}`, { cache: 'no-store' });
   if (res.status === 404) return null;
@@ -55,7 +59,7 @@ export async function fetchApartmentById(id: string): Promise<Apartment | null> 
   return body.data;
 }
 
-/** Resolves with `{ status: 'success', message, data }` on success; throws (with the backend's message) on any error. */
+/** Resolves with `{ status: 'success', message, data }` */
 export async function createApartment(payload: CreateApartmentPayload): Promise<CreateApartmentResponse> {
   const formData = new FormData();
   formData.set('name', payload.name);
