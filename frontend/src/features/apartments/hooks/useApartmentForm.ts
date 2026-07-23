@@ -67,9 +67,6 @@ export function useApartmentForm({ onDone }: ApartmentFormProps) {
       onDone?.();
       router.push(`/apartments/${result.data.id}`);
     } catch (err) {
-      // Stay in the form on failure — the user needs the chance to fix the
-      // problem (e.g. remove a rejected file) and resubmit, not lose
-      // everything they filled in by being navigated away.
       message.error(err instanceof Error ? err.message : 'Failed to create apartment');
     } finally {
       setSubmitting(false);
