@@ -9,6 +9,7 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+//SSR page for apartment details, fetching the apartment by ID .
 export default async function ApartmentDetailsPage({ params }: Props) {
   const { id } = await params;
   const apartment = await fetchApartmentById(id);

@@ -18,14 +18,7 @@ interface Props {
   }>;
 }
 
-/**
- * Server Component (SSR): fetches the apartment list on the server for every
- * request/navigation, using the URL's query string as the sole source of
- * truth for search/filter/pagination state (see SearchBar, FilterSidebar,
- * ApartmentPagination, which write to the URL instead of holding local
- * React state). See the README's "Why SSR for the listing and detail pages"
- * section for the full rationale and tradeoffs.
- */
+//SSR page for apartments listing with search, filter, and pagination functionality.
 export default async function ApartmentsPage({ searchParams }: Props) {
   const params = await searchParams;
   const search = params.search ?? "";

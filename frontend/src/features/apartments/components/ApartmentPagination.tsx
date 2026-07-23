@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ApartmentPaginationProps } from '../interfaces';
 
 export default function ApartmentPagination({ current, pageSize, total }: ApartmentPaginationProps) {
+  
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
