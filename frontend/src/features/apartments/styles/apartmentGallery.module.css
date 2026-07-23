@@ -3,13 +3,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f0f0f0;
-  border-radius: 8px;
+  background: linear-gradient(135deg, #dfe6e3, #c7d3ce);
+  border-radius: 14px;
 }
 
 .emptyIcon {
   font-size: 64px;
-  color: #bfbfbf;
+  color: rgba(0, 0, 0, 0.25);
 }
 
 .galleryWrap {
@@ -18,10 +18,34 @@
   gap: 8px;
 }
 
+.mainImageWrap {
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
 .mainImage {
   object-fit: cover;
-  border-radius: 8px;
   max-width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.mainImageWrap:hover .mainImage {
+  transform: scale(1.03);
+}
+
+.countBadge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
 }
 
 .thumbsWrap {
@@ -32,5 +56,11 @@
 
 .thumb {
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.thumb:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }

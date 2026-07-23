@@ -20,10 +20,12 @@ export default async function ApartmentDetailsPage({ params }: Props) {
   return (
     <div className={styles.container}>
       <Link href="/apartments" className={styles.backLink}>
-        &larr; Back to listing
+        <span className={styles.arrow}>&larr;</span> Back to listing
       </Link>
 
-      <ApartmentGallery images={apartment.images} alt={apartment.name} />
+      <div className={styles.galleryBlock}>
+        <ApartmentGallery images={apartment.images} alt={apartment.name} />
+      </div>
       <ApartmentDetails apartment={apartment} />
     </div>
   );

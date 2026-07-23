@@ -12,17 +12,30 @@ import { ApartmentFormProps, ApartmentFormValues } from '../interfaces';
 
 const { TextArea } = Input;
 
+const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/avif']);
+const ALLOWED_IMAGE_ACCEPT = 'image/jpeg,image/png,image/webp,image/avif';
+
 export default function ApartmentForm({ onDone }: ApartmentFormProps) {
   const router = useRouter();
   const [form] = Form.useForm<ApartmentFormValues>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [hasInvalidFile, setHasInvalidFile] = useState(false);
 
   const uploadProps: UploadProps = {
     multiple: true,
+    accept: ALLOWED_IMAGE_ACCEPT,
     fileList,
     showUploadList: false,
-    beforeUpload: () => false,
+    beforeUpload: (file) => {
+      if (!ALLOWED_IMAGE_TYPES.has(file.type)) {
+        message.warning(`${file.name} isn't a supported image type (JPEG, PNG, WEBP, or AVIF only)`);
+        setHasInvalidFile(true);
+        return Upload.LIST_IGNORE;
+      }
+      setHasInvalidFile(false);
+      return false;
+    },
     onChange: ({ fileList: newList }) => setFileList(newList),
   };
 
@@ -57,11 +70,14 @@ export default function ApartmentForm({ onDone }: ApartmentFormProps) {
         .map((f) => f.originFileObj)
         .filter((f): f is NonNullable<typeof f> => Boolean(f)) as File[];
 
-      const apartment = await createApartment({ ...values, images });
-      message.success('Apartment created successfully');
+      const result = await createApartment({ ...values, images });
+      message.success(result.message);
       onDone?.();
-      router.push(`/apartments/${apartment.id}`);
+      router.push(`/apartments/${result.data.id}`);
     } catch (err) {
+      // Stay in the form on failure — the user needs the chance to fix the
+      // problem (e.g. remove a rejected file) and resubmit, not lose
+      // everything they filled in by being navigated away.
       message.error(err instanceof Error ? err.message : 'Failed to create apartment');
     } finally {
       setSubmitting(false);
@@ -186,7 +202,14 @@ export default function ApartmentForm({ onDone }: ApartmentFormProps) {
 
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" loading={submitting} block size="large">
+        <Button
+          type="primary"
+          htmlType="submit"
+          loading={submitting}
+          disabled={hasInvalidFile}
+          block
+          size="large"
+        >
           Add Unit
         </Button>
       </Form.Item>

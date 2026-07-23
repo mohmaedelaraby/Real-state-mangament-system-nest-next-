@@ -43,3 +43,12 @@ export interface CreateApartmentPayload {
   baths: number;
   images: File[];
 }
+
+/** Envelope every backend response is wrapped in (see backend's ResponseInterceptor). */
+export interface ApiResponse<T> {
+  status: 'success';
+  message: string;
+  data: T;
+}
+
+export type CreateApartmentResponse = ApiResponse<Apartment>;
