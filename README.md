@@ -2,6 +2,8 @@
 
 A full-stack apartment listing application: browse, search, view details, and add apartment listings with images.
 
+This is a **monorepo**: the NestJS backend (`/backend`) and the Next.js frontend (`/frontend`) live side by side in one repository, each with its own `package.json`/dependencies/Dockerfile, and are orchestrated together by the root `docker-compose.yml`. There's no shared/published package between them — the two apps only talk over HTTP.
+
 ## Contents
 
 - [Tech stack](#tech-stack)
