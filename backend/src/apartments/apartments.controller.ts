@@ -8,42 +8,32 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
+import { ResponseMessage } from '../common/decorators/response-message.decorator';
 import { ImageUploadInterceptor } from '../common/interceptors/image-upload.interceptor';
 import { ApartmentsService } from './apartments.service';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
 import { QueryApartmentsDto } from './dto/query-apartments.dto';
-
 @Controller('apartments')
 export class ApartmentsController {
   constructor(private readonly apartmentsService: ApartmentsService) {}
 
-  /**
-   * GET /apartments
-   * Paginated, filtered listing. All query params are optional.
-   * @param query search/project/city filters + page/limit (validated & defaulted by QueryApartmentsDto)
-   * @returns { data: Apartment[], total: number, page: number, limit: number }
-   */
+  /** GET /apartments - get all apartments, optionally filtered by query params (see QueryApartmentsDto) **/
   @Get()
+  @ResponseMessage('success')
   findAll(@Query() query: QueryApartmentsDto) {
     return this.apartmentsService.findAll(query);
   }
 
-  /**
-   * GET /apartments/:id
-   * @returns the apartment, or a 404 if `id` doesn't match any row.
-   */
+  /** GET /apartments/:id -- get apartment details by id **/
   @Get(':id')
+  @ResponseMessage('success')
   findOne(@Param('id') id: string) {
     return this.apartmentsService.findOne(id);
   }
 
-  /**
-   * POST /apartments
-   * multipart/form-data: text fields per CreateApartmentDto + up to 10 image
-   * ImageUploadInterceptor for the upload/validation rules.
-   * @returns the created apartment (201), including public image URLs.
-   */
+  /** POST /apartments  - create a new apartment **/
   @Post()
+  @ResponseMessage(' created successfully')
   @UseInterceptors(ImageUploadInterceptor('images', 10))
   create(
     @Body() dto: CreateApartmentDto,

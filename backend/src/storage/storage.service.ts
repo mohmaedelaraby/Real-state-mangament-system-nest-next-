@@ -9,6 +9,8 @@ import {
 } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 
+
+// this class handles file storage as a service to simulate AWS S3 using MinIO 
 @Injectable()
 export class StorageService implements OnModuleInit {
   private readonly logger = new Logger(StorageService.name);
@@ -35,9 +37,7 @@ export class StorageService implements OnModuleInit {
     await this.ensureBucket();
   }
 
-  // Checks whether the target bucket exists on startup and creates it (with a
-  // public-read policy) if it doesn't, so a fresh MinIO volume works out of the box.
-  private async ensureBucket() {
+ private async ensureBucket() {
     try {
       await this.client.send(new HeadBucketCommand({ Bucket: this.bucket }));
       this.logger.log(`Bucket "${this.bucket}" already exists`);
@@ -84,8 +84,6 @@ export class StorageService implements OnModuleInit {
       }),
     );
 
-    // Built with MINIO_PUBLIC_URL (not the internal endpoint) because this URL
-    // is rendered in <img src> and must be resolvable from the reviewer's browser.
     return `${this.publicUrl}/${this.bucket}/${key}`;
   }
 

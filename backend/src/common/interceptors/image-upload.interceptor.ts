@@ -5,9 +5,7 @@ import { memoryStorage } from 'multer';
 const MAX_IMAGE_SIZE_BYTES = 8 * 1024 * 1024; // 8MB per file
 const ALLOWED_IMAGE_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/avif']);
 
-/**
- * valdates and intercepts image uploads for a given field name. Supports multiple files.
- */
+// validation interceptor for image uploads, to validate type and size.
 export function ImageUploadInterceptor(fieldName: string, maxCount = 10) {
   return FilesInterceptor(fieldName, maxCount, {
     storage: memoryStorage(),

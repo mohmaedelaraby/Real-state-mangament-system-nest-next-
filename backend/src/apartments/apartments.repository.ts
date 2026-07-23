@@ -4,14 +4,14 @@ import { QueryApartmentsDto } from "./dto/query-apartments.dto";
 import { CreateApartmentDto } from "./dto/create-apartment.dto";
 import { Prisma } from "@prisma/client";
 
+
+/** this layer handles direct database operations for apartments */
 @Injectable()
 export class ApartmentsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   /**
-   * Paginated, filtered apartment list. `search` matches `name`, `unitNumber`,
-   * or `project` (OR'd together); `project`/`city` narrow further (AND'd with
-   * search).
+   * Paginated, filtered apartment list. `search` matches `name`, `unitNumber`, or `project` from DB
    **/
   async findAll(query: QueryApartmentsDto) {
     const page = query.page ?? 1;
@@ -57,13 +57,14 @@ export class ApartmentsRepository {
     return { data, total, page, limit };
   }
 
-  /** Returns `null` when not found — the 404 decision belongs to the service, not here. */
+  /**  responsible for getting a single apartment by id Query.
+   *  Returns `null` when not found . */
   async findOne(id: string) {
     const apartment = await this.prisma.apartment.findUnique({ where: { id } });
     return apartment;
   }
 
-  /** Persists a row with already-uploaded image URLs. Uploading is the caller's (service's) job. */
+  /** responsible for creating a new apartment in DB**/
   async create(dto: CreateApartmentDto, images: string[]) {
     return this.prisma.apartment.create({
       data: {
